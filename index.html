@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Siswa – XI PPLG – SMK Negeri 9 Semarang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F7F4EE;
+      --ink: #1A1814;
+      --muted: #6B6760;
+      --accent: #1a3a6b;
+      --accent2: #c8a800;
+      --border: #DDD9D0;
+      --card-bg: #FFFFFF;
+      --tag-bg: #EDE9E0;
+    }
+
+    body {
+      background-color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--accent);
+      color: #fff;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 54px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header .brand {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      opacity: 0.85;
+      text-transform: uppercase;
+    }
+
+    header .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      background: var(--accent2);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 2px;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+
+    /* STRIPE */
+    .stripe {
+      height: 4px;
+      background: var(--accent2);
+    }
+
+    /* HERO */
+    .hero {
+      padding: 4rem 2rem 2.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: end;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--accent2);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+    }
+
+    .hero h1 span {
+      color: var(--ink);
+    }
+
+    .hero-address {
+      margin-top: 1rem;
+      font-size: 12.5px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      line-height: 1.6;
+    }
+
+    .hero-meta {
+      text-align: right;
+    }
+
+    .hero-meta .year {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.5rem;
+      font-weight: 900;
+      color: var(--border);
+      line-height: 1;
+    }
+
+    .hero-meta .class {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat {
+      padding: 0 1.25rem;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat:first-child { padding-left: 0; }
+    .stat:last-child { border-right: none; }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-number span {
+      font-size: 0.9rem;
+      color: var(--accent2);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* MAIN */
+    .main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    /* STUDENT CARD */
+    .student-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .student-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+    }
+
+    .student-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .card-a::before { background: var(--accent); }
+    .card-b::before { background: var(--accent2); }
+
+    .card-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .avatar-a { background: #e8eef7; color: var(--accent); }
+    .avatar-b { background: #fdf8e3; color: #8a6e00; }
+
+    .student-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.4rem;
+    }
+
+    .student-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 1rem 0;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    .info-key {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .info-val {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      padding: 3px 9px;
+      border-radius: 2px;
+      letter-spacing: 0.06em;
+    }
+
+    .badge-a { background: #e8eef7; color: var(--accent); }
+    .badge-b { background: #fdf8e3; color: #8a6e00; }
+
+    /* SKILL BARS */
+    .skill-bar-wrap { margin-top: 1.25rem; }
+
+    .skill-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 7px;
+    }
+
+    .skill-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      width: 80px;
+      flex-shrink: 0;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .skill-track {
+      flex: 1;
+      height: 3px;
+      background: var(--tag-bg);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      border-radius: 2px;
+      animation: fillIn 1s ease forwards;
+      transform-origin: left;
+    }
+
+    @keyframes fillIn {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    .fill-a { background: var(--accent); }
+    .fill-b { background: var(--accent2); }
+
+    .skill-pct {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      width: 26px;
+      text-align: right;
+    }
+
+    .tags {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      padding: 3px 9px;
+      border-radius: 2px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* BOTTOM */
+    .bottom {
+      max-width: 1000px;
+      margin: 0 auto 3rem;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    /* TABLE */
+    .data-table-wrap {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead tr { border-bottom: 1px solid var(--border); }
+
+    thead th {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 0 0 9px;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--tag-bg);
+      transition: background 0.12s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--cream); }
+
+    tbody td { padding: 9px 0; }
+
+    .dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+
+    .dot-a { background: var(--accent); }
+    .dot-b { background: var(--accent2); }
+
+    /* TEACHER CARD */
+    .teacher-card {
+      background: var(--accent);
+      color: #fff;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .teacher-top-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .teacher-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .teacher-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .teacher-role {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      opacity: 0.65;
+      margin-top: 0.5rem;
+      letter-spacing: 0.06em;
+    }
+
+    .teacher-footer {
+      margin-top: 1.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      color: var(--accent2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer .f-left {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    footer .f-right {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    /* FADE IN */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 0.55s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in:nth-child(1) { animation-delay: 0.05s; }
+    .fade-in:nth-child(2) { animation-delay: 0.12s; }
+    .fade-in:nth-child(3) { animation-delay: 0.2s; }
+    .fade-in:nth-child(4) { animation-delay: 0.28s; }
+
+    @media (max-width: 700px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-meta { text-align: left; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 0.9rem 0; }
+      .main, .bottom { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="brand">SMK Negeri 9 Semarang</span>
+    <span class="tag">XI PPLG</span>
+  </header>
+  <div class="stripe"></div>
+
+  <!-- HERO -->
+  <section class="hero fade-in">
+    <div>
+      <p class="hero-label">&#8212; Data Siswa</p>
+      <h1>SMK Negeri<br><span>9 Semarang</span></h1>
+      <p class="hero-address">
+        Jl. Peterongansari No. 2, Kel. Peterongan<br>
+        Kec. Semarang Selatan, Kota Semarang<br>
+        Jawa Tengah &nbsp;·&nbsp; Kode Pos 50242
+      </p>
+    </div>
+    <div class="hero-meta">
+      <div class="year">2025</div>
+      <div class="class">Pengembangan Perangkat<br>Lunak &amp; GIM</div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar fade-in">
+    <div class="stat">
+      <div class="stat-number">2 <span>siswa</span></div>
+      <div class="stat-label">Data Ditampilkan</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">XI <span>PPLG</span></div>
+      <div class="stat-label">Kelas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">26 <span>&amp;</span> 36</div>
+      <div class="stat-label">Nomor Absen</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">2025<span>/26</span></div>
+      <div class="stat-label">Tahun Ajaran</div>
+    </div>
+  </div>
+
+  <!-- STUDENT CARDS -->
+  <div class="main">
+
+    <div class="student-card card-a fade-in">
+      <div class="card-number">&#8470; 01 &mdash; Siswa Pertama</div>
+      <div class="avatar avatar-a">MD</div>
+      <div class="student-name">Mustaqimah<br>Dwi Susilo</div>
+      <div class="student-sub">XI PPLG &nbsp;·&nbsp; Absen 26</div>
+
+      <hr class="divider" />
+
+      <div class="info-grid">
+        <div>
+          <div class="info-key">Nama Lengkap</div>
+          <div class="info-val">Mustaqimah Dwi Susilo</div>
+        </div>
+        <div>
+          <div class="info-key">No. Absen</div>
+          <div class="info-val">26</div>
+        </div>
+        <div>
+          <div class="info-key">Kelas</div>
+          <div class="info-val">XI PPLG</div>
+        </div>
+        <div>
+          <div class="info-key">Status</div>
+          <div class="info-val"><span class="badge badge-a">Aktif</span></div>
+        </div>
+      </div>
+
+      <div class="skill-bar-wrap">
+        <div class="skill-row">
+          <span class="skill-name">Frontend</span>
+          <div class="skill-track"><div class="skill-fill fill-a" style="width:82%;"></div></div>
+          <span class="skill-pct">82%</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">UI Design</span>
+          <div class="skill-track"><div class="skill-fill fill-a" style="width:75%;"></div></div>
+          <span class="skill-pct">75%</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Database</span>
+          <div class="skill-track"><div class="skill-fill fill-a" style="width:68%;"></div></div>
+          <span class="skill-pct">68%</span>
+        </div>
+      </div>
+
+      <div class="tags">
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">Desain</span>
+      </div>
+    </div>
+
+    <div class="student-card card-b fade-in">
+      <div class="card-number">&#8470; 02 &mdash; Siswa Kedua</div>
+      <div class="avatar avatar-b">ZN</div>
+      <div class="student-name">Zasky Najwa<br>Safa</div>
+      <div class="student-sub">XI PPLG &nbsp;·&nbsp; Absen 36</div>
+
+      <hr class="divider" />
+
+      <div class="info-grid">
+        <div>
+          <div class="info-key">Nama Lengkap</div>
+          <div class="info-val">Zasky Najwa Safa</div>
+        </div>
+        <div>
+          <div class="info-key">No. Absen</div>
+          <div class="info-val">36</div>
+        </div>
+        <div>
+          <div class="info-key">Kelas</div>
+          <div class="info-val">XI PPLG</div>
+        </div>
+        <div>
+          <div class="info-key">Status</div>
+          <div class="info-val"><span class="badge badge-b">Aktif</span></div>
+        </div>
+      </div>
+
+      <div class="skill-bar-wrap">
+        <div class="skill-row">
+          <span class="skill-name">Backend</span>
+          <div class="skill-track"><div class="skill-fill fill-b" style="width:78%;"></div></div>
+          <span class="skill-pct">78%</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Algoritma</span>
+          <div class="skill-track"><div class="skill-fill fill-b" style="width:85%;"></div></div>
+          <span class="skill-pct">85%</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Game Dev</span>
+          <div class="skill-track"><div class="skill-fill fill-b" style="width:70%;"></div></div>
+          <span class="skill-pct">70%</span>
+        </div>
+      </div>
+
+      <div class="tags">
+        <span class="tag">Python</span>
+        <span class="tag">PHP</span>
+        <span class="tag">Laravel</span>
+        <span class="tag">GIM</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="bottom">
+
+    <div class="data-table-wrap fade-in">
+      <div class="section-title">&#8212; Rekap Data Siswa</div>
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>No. Absen</th>
+            <th>Nama Lengkap</th>
+            <th>Kelas</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>26</td>
+            <td><span class="dot dot-a"></span>Mustaqimah Dwi Susilo</td>
+            <td>XI PPLG</td>
+            <td><span class="badge badge-a">Aktif</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>36</td>
+            <td><span class="dot dot-b"></span>Zasky Najwa Safa</td>
+            <td>XI PPLG</td>
+            <td><span class="badge badge-b">Aktif</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="teacher-card fade-in">
+      <div>
+        <div class="teacher-top-label">&#8212; Guru Pembimbing</div>
+        <div class="teacher-avatar">RK</div>
+        <div class="teacher-name">Bapak Rana Kusuma Aji Putra, S.T.</div>
+        <div class="teacher-role">Guru Pembimbing &nbsp;·&nbsp; XI PPLG</div>
+      </div>
+      <div class="teacher-footer">SMK Negeri 9 Semarang</div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="f-left">Data Siswa &mdash; XI PPLG &mdash; SMK Negeri 9 Semarang</div>
+    <div class="f-right">&copy; 2025 / 2026</div>
+  </footer>
+
+</body>
+</html>
